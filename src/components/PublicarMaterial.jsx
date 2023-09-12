@@ -163,7 +163,7 @@ export default function PublicarMaterial() {
                         </ModalFooter>
                     </>
                 )}
-            </ModalContent>gi
+            </ModalContent>
         </Modal>
         </>
     )
