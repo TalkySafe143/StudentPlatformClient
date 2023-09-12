@@ -10,6 +10,7 @@ function App() {
   return (
     <>
       <Button>Como fueron las locas</Button>
+        <Button> Como fue con el template</Button>
     </>
   )
 }
