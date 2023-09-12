@@ -35,6 +35,21 @@ export default function PublicarMaterial() {
         setEnabled(true);
         //inputFile.current.files
         console.log(inputFile.current.files[0])
+
+        var titulo = document.getElementById("idTitulo");
+        var valorTitulo = titulo.value.trim();
+        if(valorTitulo === ""){
+            alert("Ingrese un titulo");
+            setEnabled(false);
+        }
+
+        var descripcion = document.getElementById("idDescripcion");
+        var valorDescripcion = descripcion.value.trim();
+        if(valorDescripcion === ""){
+            alert("Ingrese una descrpcion");
+            setEnabled(false);
+        }
+
     }
 
     const addFile = (e) => {
@@ -64,6 +79,7 @@ export default function PublicarMaterial() {
                                    value={title}
                                    onChange={e => setTitle(e.target.value)}
                                    isRequired
+                                   id = "idTitulo"
                             />
                                 <Textarea
                                     label="Descripcion (Markdown - Latex)"
@@ -71,6 +87,8 @@ export default function PublicarMaterial() {
                                     placeholder="Ingrese la descripcion o el cuerpo del material"
                                     value={description}
                                     onChange={e => setDescription(e.target.value)}
+                                    isRequired
+                                    id = "idDescripcion"
                                 />
                             <input type="file" id="file" ref={inputFile} style={{ display: "none" }} onChange={addFile}
                                 value={file}/>
@@ -106,6 +124,21 @@ export default function PublicarMaterial() {
                                 </Dropdown>
                                 <Button isDisabled > {file ? file.split(".")[1] : ""} </Button>
                             </ButtonGroup>
+                            <Dropdown>
+                                <DropdownTrigger>
+                                    <Button
+                                        variant="bordered"
+                                    >
+                                        Seleccione una materia
+                                    </Button>
+                                </DropdownTrigger>
+                                <DropdownMenu aria-label="Static Actions">
+                                    <DropdownItem key="new">Estructuras de datos</DropdownItem>
+                                    <DropdownItem key="copy">Bases de datos</DropdownItem>
+                                    <DropdownItem key="edit">Ingenieria de software</DropdownItem>
+                                    <DropdownItem key="edit">Sistemas de informacion</DropdownItem>
+                                </DropdownMenu>
+                            </Dropdown>
 
                             { enabled ? <Progress
                                 isIndeterminate={!posted}
@@ -130,7 +163,7 @@ export default function PublicarMaterial() {
                         </ModalFooter>
                     </>
                 )}
-            </ModalContent>
+            </ModalContent>gi
         </Modal>
         </>
     )
