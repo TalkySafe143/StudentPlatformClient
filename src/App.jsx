@@ -1,17 +1,18 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import {Button} from "@nextui-org/react";
+import Navegacion from "./components/Navegacion.jsx";
+import {createContext, useState} from "react";
+
+export const PageContext = createContext(null);
 
 function App() {
-  const [count, setCount] = useState(0)
+
+    const [ page, setPage ] = useState(null);
 
   return (
     <>
-      <Button>Como fueron las locas</Button>
-        <Button> Como fue con el template</Button>
-      <Button>Esta es otra modificacion para que retocen, malparido canson</Button>
+        <PageContext.Provider value={{page, setPage}}>
+            <Navegacion />
+            {page}
+        </PageContext.Provider>
     </>
   )
 }
