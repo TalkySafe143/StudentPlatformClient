@@ -4,11 +4,15 @@ import {useContext} from "react";
 import {PageContext} from "../App.jsx";
 import Materiales from "./Materiales.jsx";
 import Materias from "./Materias.jsx";
+import Login from "./Login.jsx";
+import SignUp from "./SignUp.jsx";
 export default function Navegacion() {
     const { page, setPage } = useContext(PageContext);
     const ref = {
         "Material": <Materiales />,
-        "Materia": <Materias />
+        "Materia": <Materias />,
+        "Login" : <Login />,
+        "Sign Up" : <SignUp />
     }
     const onClickLink = (e) => {
         setPage(ref[e.target.text]);
@@ -33,10 +37,12 @@ export default function Navegacion() {
             </NavbarContent>
             <NavbarContent justify="end">
                 <NavbarItem className="hidden lg:flex">
-                    <Link href="#" color="secondary">Login</Link>
+                    <Link href="#" color="secondary" onClick={onClickLink}>
+                        Login
+                    </Link>
                 </NavbarItem>
                 <NavbarItem>
-                    <Button as={Link} color="secondary" href="#" variant="flat">
+                    <Button as={Link} color="secondary" href="#" variant="flat" onClick={onClickLink}>
                         Sign Up
                     </Button>
                 </NavbarItem>
