@@ -1,5 +1,5 @@
 import {
-    Button, ButtonGroup, cn, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input,
+    Button, ButtonGroup, Chip, cn, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input,
     Modal,
     ModalBody,
     ModalContent,
@@ -24,6 +24,8 @@ export default function PublicarMaterial() {
     const [posted, setPosted] = useState(false);
     const [error, setError] = useState(false);
     const [description, setDescription] = useState("");
+    const [materia, setMateria] = useState("Materia")
+    const [invalid, setInvalid] = useState(false);
     const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0";
     const handleOpen = () => {
         onOpen();
@@ -36,24 +38,23 @@ export default function PublicarMaterial() {
         //inputFile.current.files
         console.log(inputFile.current.files[0])
 
-        var titulo = document.getElementById("idTitulo");
-        var valorTitulo = titulo.value.trim();
-        if(valorTitulo === ""){
-            alert("Ingrese un titulo");
+        if(title === "" || description === ""){
+            setInvalid(true);
             setEnabled(false);
+            return;
         }
 
-        var descripcion = document.getElementById("idDescripcion");
-        var valorDescripcion = descripcion.value.trim();
-        if(valorDescripcion === ""){
-            alert("Ingrese una descrpcion");
-            setEnabled(false);
-        }
-
+        setInvalid(false)
     }
 
     const addFile = (e) => {
         setFile(e.target.value)
+    }
+
+    // Pedirla de la base de datos
+    const materias = ["Estructuras de datos", "Bases de datos", "Ingenieria de software", "Sistemas de informacion"]
+    const onChangeMateria = e => {
+        setMateria(e)
     }
 
     return (
@@ -72,8 +73,9 @@ export default function PublicarMaterial() {
                     <>
                         <ModalHeader className="flex flex-col gap-1 text-2xl">¡Publica un material!</ModalHeader>
                         <ModalBody>
+                            {invalid ? <Chip color="danger">Rellene los campos obligatorios</Chip>: ""}
                             <Input type="text"
-                                   label="Titulo del material"
+                                   label={"Titulo del material"}
                                    labelPlacement="outside"
                                    placeholder="Ingrese el titulo del material"
                                    value={title}
@@ -93,7 +95,22 @@ export default function PublicarMaterial() {
                             <input type="file" id="file" ref={inputFile} style={{ display: "none" }} onChange={addFile}
                                 value={file}/>
                             <ButtonGroup>
-                                <Preview content={description} title={title} file={file}/>
+                                <Preview content={description} title={
+                                    <div className="flex gap-2">
+                                        {title}
+                                        <Chip color="primary">Preview</Chip>
+                                    </div>
+                                } file={file} materia={materia}/>
+                                <Dropdown>
+                                    <DropdownTrigger>
+                                        <Button>
+                                            {materia.length > 7 ? materia.substring(0, 7)+'...' : materia}
+                                        </Button>
+                                    </DropdownTrigger>
+                                    <DropdownMenu aria-label="Static Actions" onAction={onChangeMateria}>
+                                        {materias.map(mat => <DropdownItem key={mat}>{mat}</DropdownItem>)}
+                                    </DropdownMenu>
+                                </Dropdown>
                                 <Dropdown>
                                     <DropdownTrigger>
                                         <Button>
@@ -124,21 +141,6 @@ export default function PublicarMaterial() {
                                 </Dropdown>
                                 <Button isDisabled > {file ? file.split(".")[1] : ""} </Button>
                             </ButtonGroup>
-                            <Dropdown>
-                                <DropdownTrigger>
-                                    <Button
-                                        variant="bordered"
-                                    >
-                                        Seleccione una materia
-                                    </Button>
-                                </DropdownTrigger>
-                                <DropdownMenu aria-label="Static Actions">
-                                    <DropdownItem key="new">Estructuras de datos</DropdownItem>
-                                    <DropdownItem key="copy">Bases de datos</DropdownItem>
-                                    <DropdownItem key="edit">Ingenieria de software</DropdownItem>
-                                    <DropdownItem key="edit">Sistemas de informacion</DropdownItem>
-                                </DropdownMenu>
-                            </Dropdown>
 
                             { enabled ? <Progress
                                 isIndeterminate={!posted}

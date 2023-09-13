@@ -1,5 +1,5 @@
 import React from "react";
-import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure} from "@nextui-org/react";
+import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Chip} from "@nextui-org/react";
 import ReactMarkdown from "react-markdown";
 import remarkMath from "remark-math";
 import "katex/dist/katex.min.css"
@@ -14,8 +14,11 @@ export default function Preview(props) {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1 text-2xl">{props.title}</ModalHeader>
-                            <ModalBody>
+                            <ModalHeader className="flex gap-1 text-2xl">
+                                {props.title}
+                                <Chip color="success">{props.materia}</Chip>
+                            </ModalHeader>
+                            <ModalBody className="leading-8">
                                 <ReactMarkdown
                                     children={props.content}
                                     remarkPlugins={[remarkMath]}
