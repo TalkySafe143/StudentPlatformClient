@@ -71,8 +71,8 @@ export default function Login() {
                         </a>
                     </p>
                 </div>
-            </div>
-        </motion.div>
-        </AnimatePresence>
+                </div>
+            </motion.div>
+            </AnimatePresence>
     );
 }
