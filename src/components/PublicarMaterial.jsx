@@ -6,6 +6,8 @@ import {
     ModalFooter,
     ModalHeader,
     Progress, Textarea,
+    Select,
+    SelectItem,
     useDisclosure
 } from "@nextui-org/react";
 import { AiOutlinePlus } from 'react-icons/ai'
@@ -24,8 +26,9 @@ export default function PublicarMaterial() {
     const [posted, setPosted] = useState(false);
     const [error, setError] = useState(false);
     const [description, setDescription] = useState("");
-    const [materia, setMateria] = useState("Materia")
+    const [materia, setMateria] = useState("1")
     const [invalid, setInvalid] = useState(false);
+    const [materias, setMaterias] = useState([]);
     const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0";
     const handleOpen = () => {
         onOpen();
@@ -35,7 +38,6 @@ export default function PublicarMaterial() {
         //setPosted(true);
         //setError(true)
         setEnabled(true);
-        //inputFile.current.files
         console.log(inputFile.current.files[0])
 
         if(title === "" || description === ""){
@@ -45,6 +47,19 @@ export default function PublicarMaterial() {
         }
 
         setInvalid(false)
+
+        const form = new FormData();
+        form.append('uploadedFiles', inputFile.current.files[0]);
+        form.append('title', title);
+        form.append('desc', description);
+        form.append('materia_materia_id', materia);
+        form.append('estudiante_cc', '1034281129');
+        fetch('http://localhost:3000/api/material', {
+            method: "POST",
+            body: form
+        }).then(res => res.json()).then(data => {
+            setPosted(true)
+        }).catch(err => setError(true))
     }
 
     const addFile = (e) => {
@@ -52,9 +67,19 @@ export default function PublicarMaterial() {
     }
 
     // Pedirla de la base de datos
-    const materias = ["Estructuras de datos", "Bases de datos", "Ingenieria de software", "Sistemas de informacion"]
+    useEffect(() => {
+        const temp = [];
+        fetch('http://localhost:3000/api/materias/')
+            .then(results => results.json())
+            .then(json => {
+                json.data.forEach(materia => {
+                    temp.push(materia)
+                })
+            });
+        setMaterias(temp);
+    }, []);
     const onChangeMateria = e => {
-        setMateria(e)
+        setMateria(e.target.value)
     }
 
     return (
@@ -67,7 +92,10 @@ export default function PublicarMaterial() {
         >
             Publicar material
         </Button>
-        <Modal backdrop="blur" isOpen={isOpen} onClose={onClose}>
+        <Modal backdrop="blur" isOpen={isOpen} onClose={() => {
+            setFile("")
+            onClose()
+        }}>
             <ModalContent>
                 {(onClose) => (
                     <>
@@ -94,23 +122,13 @@ export default function PublicarMaterial() {
                                 />
                             <input type="file" id="file" ref={inputFile} style={{ display: "none" }} onChange={addFile}
                                 value={file}/>
-                            <ButtonGroup>
+                            <ButtonGroup className="mt-3">
                                 <Preview content={description} title={
                                     <div className="flex gap-2">
                                         {title}
                                         <Chip color="primary">Preview</Chip>
                                     </div>
-                                } file={file} materia={materia}/>
-                                <Dropdown>
-                                    <DropdownTrigger>
-                                        <Button>
-                                            {materia.length > 7 ? materia.substring(0, 7)+'...' : materia}
-                                        </Button>
-                                    </DropdownTrigger>
-                                    <DropdownMenu aria-label="Static Actions" onAction={onChangeMateria}>
-                                        {materias.map(mat => <DropdownItem key={mat}>{mat}</DropdownItem>)}
-                                    </DropdownMenu>
-                                </Dropdown>
+                                } file={file} materia={materia} prev={true}/>
                                 <Dropdown>
                                     <DropdownTrigger>
                                         <Button>
@@ -141,6 +159,18 @@ export default function PublicarMaterial() {
                                 </Dropdown>
                                 <Button isDisabled > {file ? file.split(".")[1] : ""} </Button>
                             </ButtonGroup>
+
+                            <Select
+                                label="Materia relacionada al material"
+                                placeholder="Seleccione una materia"
+                                isRequired
+                                onChange={onChangeMateria}
+                                className="mt-5"
+                            >
+                                {materias.map(materiaa => (
+                                    <SelectItem key={materiaa.materia_id} value={materiaa.name} textValue={materiaa.name}> {materiaa.name} </SelectItem>
+                                ))}
+                            </Select>
 
                             { enabled ? <Progress
                                 isIndeterminate={!posted}
