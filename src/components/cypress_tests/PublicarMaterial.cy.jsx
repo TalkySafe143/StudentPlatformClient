@@ -1,5 +1,5 @@
 import React from 'react'
-import PublicarMaterial from './PublicarMaterial'
+import PublicarMaterial from '../PublicarMaterial.jsx'
 
 describe('<PublicarMaterial />', () => {
   it('renders', () => {
