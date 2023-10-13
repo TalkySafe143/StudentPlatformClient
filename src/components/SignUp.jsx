@@ -1,8 +1,11 @@
 import {motion, AnimatePresence} from "framer-motion";
 import {useEffect, useState} from "react";
+import { useAlert } from 'react-alert'
+import Navegacion from "./Navegacion.jsx";
 
 export default function SignUp() {
 
+    const alert = useAlert();
     const [cc, setCC] = useState("");
     const [name, setName] = useState("");
     const [semester, setSemester] = useState(0);
@@ -11,11 +14,6 @@ export default function SignUp() {
     const [status, setStatus] = useState("");
 
     async function registrarEstudiante(e) {
-        setName("");
-        setSemester(0);
-        setCareer("");
-        setPassword("");
-        setCC("");
         try {
             const data = await fetch('https://javeplatformapi.2.us-1.fl0.io/api/auth/register',{
                 method: 'POST',
@@ -30,15 +28,24 @@ export default function SignUp() {
                     password
                 })
             });
+
             const json = await data.json();
-            if (json.err) setStatus('error');
-            else setStatus('success');
+            if (json.err) alert.error('Ya se creó ese usuario')
+            else alert.success('Usuario creado correctamente')
         } catch (e) {
             setStatus('error');
+        } finally {
+            setName("");
+            setSemester(0);
+            setCareer("");
+            setPassword("");
+            setCC("");
         }
     }
 
     return (
+        <>
+        <Navegacion />
         <AnimatePresence>
             <motion.div
                 initial={{ opacity: 0 }}
@@ -150,5 +157,6 @@ export default function SignUp() {
                 </div>
             </motion.div>
         </AnimatePresence>
+        </>
     )
 }

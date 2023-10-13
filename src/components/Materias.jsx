@@ -1,9 +1,20 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {DndContext} from '@dnd-kit/core';
 import {Draggable} from './Draggable';
 import {Droppable} from './Droppable';
+import {AnimatePresence, motion} from "framer-motion";
+import Navegacion from "./Navegacion.jsx";
+import {useNavigate} from "react-router-dom";
 
 export default function Materias() {
+
+    const navigate =useNavigate();
+
+    useEffect(() => {
+        if (!localStorage.getItem('jwt')) {
+            navigate("/login")
+        }
+    }, []);
 
     const [droppedElements, setDroppedElements] = useState([]);
     const [parent, setParent] = useState(null);
@@ -16,6 +27,14 @@ export default function Materias() {
     ];
 
     return (
+        <>
+        <Navegacion />
+        <AnimatePresence>
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ ease: "easeOut", duration: 0.5 }}
+            >
         <DndContext onDragEnd={handleDragEnd}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }} className="mb-2 mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
 
@@ -30,6 +49,8 @@ export default function Materias() {
                 </div>
             </div>
         </DndContext>
+            </motion.div></AnimatePresence>
+        </>
     );
 
     function handleDragEnd({ over, active }) {

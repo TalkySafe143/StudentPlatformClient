@@ -3,15 +3,28 @@ import {AnimatePresence, motion} from "framer-motion";
 import PublicarMaterial from "./PublicarMaterial.jsx";
 import {useEffect, useState} from "react";
 import Preview from "./Preview.jsx";
-
+import Navegacion from "./Navegacion.jsx";
+import {useNavigate} from "react-router-dom";
 export default function Materiales() {
+    const navigate =useNavigate();
+
+    useEffect(() => {
+        if (!localStorage.getItem('jwt')) {
+            navigate("/login")
+        }
+    }, []);
 
     const [materiales, setMateriales] = useState([])
     const [confirm, setConfirm] = useState("");
 
     const onDelete = e => {
 
-        fetch('https://javeplatformapi.2.us-1.fl0.io/api/material/'+e, { method: 'DELETE' })
+        fetch('https://javeplatformapi.2.us-1.fl0.io/api/material/'+e, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+            }
+        })
             .then(res => res.json())
             .then(data => setConfirm("eliminado"))
             .catch(err => setConfirm("error"))
@@ -19,7 +32,11 @@ export default function Materiales() {
     }
 
     useEffect(() => {
-        fetch('https://javeplatformapi.2.us-1.fl0.io/api/material')
+        fetch('https://javeplatformapi.2.us-1.fl0.io/api/material', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+            }
+        })
             .then(json => json.json())
             .then(data => {
                 const elements = [];
@@ -55,6 +72,8 @@ export default function Materiales() {
     }, []);
 
     return (
+        <>
+        <Navegacion />
         <AnimatePresence>
             <motion.div
                 initial={{ opacity: 0 }}
@@ -70,5 +89,6 @@ export default function Materiales() {
 
             </motion.div>
         </AnimatePresence>
+        </>
     )
 }

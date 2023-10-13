@@ -24,7 +24,11 @@ export default function Preview(props) {
             const fileType = fileExtensionS[fileExtensionS.length-1]
             setType(fileType)
         }
-        fetch('https://javeplatformapi.2.us-1.fl0.io/api/materias/'+props.materia)
+        fetch('https://javeplatformapi.2.us-1.fl0.io/api/materias/'+props.materia, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+            }
+        })
             .then(res => res.json())
             .then(data => setMateria(data.data[0].name))
     }, []);
