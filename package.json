@@ -11,16 +11,22 @@
     "cypress:open": "cypress open"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.0.8",
     "@nextui-org/react": "^2.1.12",
     "cypress": "^13.2.0",
     "framer-motion": "^10.16.4",
     "react": "^18.2.0",
+    "react-alert": "^7.0.3",
+    "react-alert-template-basic": "^1.0.2",
+    "react-alert-template-mui": "^1.0.7",
+    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
     "react-file-viewer": "^1.2.1",
     "react-file-viewer-extended": "^2.1.0",
     "react-icons": "^4.11.0",
     "react-markdown": "^8.0.7",
     "react-mathjax": "^1.0.1",
+    "react-router-dom": "^6.16.0",
     "rehype-katex": "^6.0.3",
     "remark-math": "^5.1.1"
   },

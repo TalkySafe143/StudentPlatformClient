@@ -1,51 +1,63 @@
-import {Button, Link, Navbar, NavbarBrand, NavbarContent, NavbarItem} from "@nextui-org/react";
+import {Button, Chip, Link, Navbar, NavbarBrand, NavbarContent, NavbarItem} from "@nextui-org/react";
 import {AcmeLogo} from "../assets/AcmeLogo.jsx";
-import {useContext} from "react";
-import {PageContext} from "../App.jsx";
-import Materiales from "./Materiales.jsx";
-import Materias from "./Materias.jsx";
-import Login from "./Login.jsx";
-import SignUp from "./SignUp.jsx";
+import { Link as RouterLink } from 'react-router-dom'
+import {useContext, useEffect, useState} from "react";
+import { AppContext } from './UserContextWrapper.jsx'
 export default function Navegacion() {
-    const { page, setPage } = useContext(PageContext);
-    const ref = {
-        "Material": <Materiales />,
-        "Materia": <Materias />,
-        "Login" : <Login />,
-        "Sign Up" : <SignUp />
+
+    const {user, setUser} = useContext(AppContext);
+    const [logged, setLogged] = useState(<></>);
+
+    useEffect(() => {
+    if (user === '') {
+        setLogged(<>
+            <NavbarItem className="hidden lg:flex">
+                <RouterLink to={"/login"}>
+                    <Chip color={"secondary"}>Login</Chip>
+                </RouterLink>
+            </NavbarItem>
+            <NavbarItem>
+                <RouterLink to={"/register"}>
+                    <Chip color={"secondary"} variant={"flat"}>Sign up</Chip>
+                </RouterLink>
+            </NavbarItem>
+        </>)
+    } else {
+            fetch('https://javeplatformapi.2.us-1.fl0.io/api/users/' + user, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+                }
+            }).then(res => res.json())
+                .then(json => {
+                    setLogged(
+                        <>
+                            <Chip color={"success"}>Bienvenido, {json.data[0].name}</Chip>
+                        </>
+                    )
+                })
+                .catch(err => console.log(err));
     }
-    const onClickLink = (e) => {
-        setPage(ref[e.target.text]);
-    }
+    }, []);
+
+    const onClickLink = () => {}
     return (
         <Navbar isBordered>
             <NavbarBrand>
                 <AcmeLogo />
-                <p className="font-bold text-inherit">JavePlatform</p>
+                <RouterLink to={"/"}><p className="font-bold text-inherit">JavePlatform</p></RouterLink>
+
             </NavbarBrand>
             <NavbarContent className="hidden sm:flex gap-4" justify="center">
                 <NavbarItem>
-                    <Link color="foreground" href="#" onClick={onClickLink}>
-                        Material
-                    </Link>
+                    <RouterLink to={"/materiales"}>Material</RouterLink>
                 </NavbarItem>
                 <NavbarItem>
-                    <Link href="#" aria-current="page" color="foreground" onClick={onClickLink}>
-                        Materia
-                    </Link>
+                    <RouterLink to={"/materias"}>Materia</RouterLink>
                 </NavbarItem>
             </NavbarContent>
             <NavbarContent justify="end">
-                <NavbarItem className="hidden lg:flex">
-                    <Link href="#" color="secondary" onClick={onClickLink}>
-                        Login
-                    </Link>
-                </NavbarItem>
-                <NavbarItem>
-                    <Button as={Link} color="secondary" href="#" variant="flat" onClick={onClickLink}>
-                        Sign Up
-                    </Button>
-                </NavbarItem>
+                {logged}
             </NavbarContent>
         </Navbar>
     )
