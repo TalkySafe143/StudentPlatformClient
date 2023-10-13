@@ -23,3 +23,4 @@ Droppable.propTypes = {
     id: PropTypes.string.isRequired,
     children: PropTypes.node,
 };
+

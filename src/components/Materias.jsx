@@ -4,70 +4,47 @@ import {Draggable} from './Draggable';
 import {Droppable} from './Droppable';
 
 export default function Materias() {
-    const [parent1, setParent1] = useState(null);
-    const [parent2, setParent2] = useState(null);
-    const [parent3, setParent3] = useState(null);
-    const [parent4, setParent4] = useState(null);
-    const [parent5, setParent5] = useState(null);
 
-
-    const draggable1 = (
-        <Draggable id="draggable1">
-            Materia1.
-        </Draggable>
-    );
-
-    const draggable2 = (
-        <Draggable id="draggable2">
-            Materia2.
-        </Draggable>
-    );
-
-    const draggable3 = (
-        <Draggable id="draggable3">
-            Materia3.
-        </Draggable>
-    );
-
-    const draggable4 = (
-        <Draggable id="draggable4">
-            Materia4.
-        </Draggable>
-    );
-
-    const draggable5 = (
-        <Draggable id="draggable5">
-            Materia5.
-        </Draggable>
-    );
+    const [droppedElements, setDroppedElements] = useState([]);
+    const [parent, setParent] = useState(null);
+    const draggables = [
+        <Draggable key="draggable1" id="draggable1">Draggable 1</Draggable>,
+        <Draggable key="draggable2" id="draggable2">Draggable 2</Draggable>,
+        <Draggable key="draggable3" id="draggable3">Draggable 3</Draggable>,
+        <Draggable key="draggable4" id="draggable4">Draggable 4</Draggable>,
+        <Draggable key="draggable5" id="draggable5">Draggable 5</Draggable>
+    ];
 
     return (
         <DndContext onDragEnd={handleDragEnd}>
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex' }} className="mb-2 mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
 
-                <div style={{ flex: 1, textAlign: 'center' }} className="mb-2 mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                    <Droppable id="droppable">
-                        {parent1 === "droppable" ? draggable1 : 'Drop here'}
+                <div style={{ flex: 0.5 }}>
+                    <Droppable id="droppable" validIds={['draggable1', 'draggable2', 'draggable3', 'draggable4', 'draggable5']} >
+                        {parent ? `Dropped on ${parent}` : 'Drop here'}
                     </Droppable>
                 </div>
 
-                <div style={{ flex: 1, textAlign: 'center' }} className="mb-2 mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                    <div className="mb-2 mt-5">{!parent1 ? draggable1 : null}</div>
-                    <div className="mb-2 mt-5">{!parent2 ? draggable2 : null}</div>
-                    <div className="mb-2 mt-5">{!parent3 ? draggable3 : null}</div>
-                    <div className="mb-2 mt-5">{!parent4 ? draggable4 : null}</div>
-                    <div className="mb-2 mt-5">{!parent5 ? draggable5 : null}</div>
-                </div>
+                <div style={{ flex: 0.5 }} className={"space-y-4 space-x-4 pl-8 pt-4 pb-2 pr-6"}>
 
+                        {draggables.map((draggable) => draggable)}
+
+                </div>
             </div>
         </DndContext>
     );
 
-    function handleDragEnd({over}) {
-        setParent1(over ? over.id : null);
-        setParent2(over ? over.id : null);
-        setParent3(over ? over.id : null);
-        setParent4(over ? over.id : null);
-        setParent5(over ? over.id : null);
+    function handleDragEnd({ over, active }) {
+        if (over) {
+            const elementDropped = {
+                containerId: over.id,
+                draggableId: active.id,
+                // Otros datos que quieras almacenar
+            };
+
+            setDroppedElements([...droppedElements, elementDropped]);
+
+            console.log('Dropped Elements:', elementDropped);
+        }
     }
 }
