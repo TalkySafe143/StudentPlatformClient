@@ -1,13 +1,55 @@
 import {motion, AnimatePresence} from "framer-motion";
+import Navegacion from "./Navegacion.jsx";
+import {useContext, useEffect, useState} from "react";
+import {useAlert} from "react-alert";
+import {useNavigate} from "react-router-dom";
+import {AppContext} from "./UserContextWrapper.jsx";
 
 export default function Login() {
+
+    const navigate = useNavigate()
+    const {user, setUser} = useContext(AppContext);
+    const alert = useAlert();
+    const [cc, setCC] = useState("");
+    const [password, setPassword] = useState("");
+
+    async function loginAPI(e) {
+
+        try {
+            const data = await fetch('https://javeplatformapi.2.us-1.fl0.io/api/auth/login',{
+                method: 'POST',
+                headers: new Headers({
+                    "Authorization" : `Basic ${btoa(`${cc}:${password}`)}`
+                })
+            })
+
+            const response = await data.json();
+
+            if (response.err) alert.error('Alguna informacion esta incorrecta');
+            else {
+
+                localStorage.setItem('jwt', response.token);
+                setUser(cc);
+                navigate('/');
+            }
+        } catch (e) {
+            alert.error('Ups, alguna de tu informacion es incorrecta')
+        } finally {
+            setCC("")
+            setPassword("");
+        }
+    }
+
     return (
+        <>
+        <Navegacion />
         <AnimatePresence>
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ ease: "easeOut", duration: 0.5 }}
         >
+
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
@@ -27,6 +69,8 @@ export default function Login() {
                                     name="email"
                                     type="text"
                                     required
+                                    value={cc}
+                                    onChange={e => setCC(e.target.value)}
                                     className="block w-full pl-5 rounded-md border-0 py-1.5  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
@@ -50,6 +94,8 @@ export default function Login() {
                                     type="password"
                                     autoComplete="current-password"
                                     required
+                                    value={password}
+                                    onChange={e => setPassword(e.target.value)}
                                     className="block w-full pl-5 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
@@ -58,6 +104,7 @@ export default function Login() {
                         <div>
                             <button
                                 className="flex w-full justify-center rounded-md bg-secondary px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                onClick={loginAPI}
                             >
                                 Sign in
                             </button>
@@ -74,5 +121,6 @@ export default function Login() {
                 </div>
             </motion.div>
             </AnimatePresence>
+        </>
     );
 }

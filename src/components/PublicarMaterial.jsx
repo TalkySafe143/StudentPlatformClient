@@ -11,13 +11,15 @@ import {
     useDisclosure
 } from "@nextui-org/react";
 import { AiOutlinePlus } from 'react-icons/ai'
-import {useEffect, useRef, useState} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 import ReactMarkdown from "react-markdown";
 import {AddNoteIcon} from "../assets/AddNoteIcon.jsx";
 import {DeleteDocumentIcon} from "../assets/DeleteDocumentIcon.jsx";
 import Preview from "./Preview.jsx";
+import {AppContext} from "./UserContextWrapper.jsx";
 export default function PublicarMaterial() {
 
+    const { user, setUser } = useContext(AppContext)
     const inputFile = useRef(null);
     const [file, setFile] = useState("");
     const [title, setTitle] = useState("");
@@ -53,10 +55,13 @@ export default function PublicarMaterial() {
         form.append('title', title);
         form.append('desc', description);
         form.append('materia_materia_id', materia);
-        form.append('estudiante_cc', '1034281129');
+        form.append('estudiante_cc', user);
         fetch('https://javeplatformapi.2.us-1.fl0.io/api/material', {
             method: "POST",
-            body: form
+            body: form,
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+            }
         }).then(res => res.json()).then(data => {
             setPosted(true)
         }).catch(err => setError(true))
@@ -69,7 +74,11 @@ export default function PublicarMaterial() {
     // Pedirla de la base de datos
     useEffect(() => {
         const temp = [];
-        fetch('https://javeplatformapi.2.us-1.fl0.io/api/materias/')
+        fetch('https://javeplatformapi.2.us-1.fl0.io/api/materias/',{
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+            }
+        })
             .then(results => results.json())
             .then(json => {
                 json.data.forEach(materia => {
