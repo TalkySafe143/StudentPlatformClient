@@ -11,10 +11,12 @@
     "cypress:open": "cypress open"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.0.8",
     "@nextui-org/react": "^2.1.12",
     "cypress": "^13.2.0",
     "framer-motion": "^10.16.4",
     "react": "^18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
     "react-file-viewer": "^1.2.1",
     "react-file-viewer-extended": "^2.1.0",
