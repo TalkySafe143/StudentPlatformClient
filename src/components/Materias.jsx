@@ -17,18 +17,16 @@ export default function Materias() {
 
     return (
         <DndContext onDragEnd={handleDragEnd}>
-            <div style={{ display: 'flex' }} className="mb-2 mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+            <div style={{ display: 'flex', justifyContent: 'space-between' }} className="mb-2 mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
 
-                <div style={{ flex: 0.5 }}>
+                <div className="flex flex-col gap-3 m-auto">
                     <Droppable id="droppable" validIds={['draggable1', 'draggable2', 'draggable3', 'draggable4', 'draggable5']} >
                         {parent ? `Dropped on ${parent}` : 'Drop here'}
                     </Droppable>
                 </div>
 
-                <div style={{ flex: 0.5 }} className={"space-y-4 space-x-4 pl-8 pt-4 pb-2 pr-6"}>
-
-                        {draggables.map((draggable) => draggable)}
-
+                <div className="flex flex-col gap-3 m-auto">
+                        {draggables}
                 </div>
             </div>
         </DndContext>

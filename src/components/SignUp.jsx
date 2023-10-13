@@ -1,6 +1,43 @@
 import {motion, AnimatePresence} from "framer-motion";
+import {useEffect, useState} from "react";
 
 export default function SignUp() {
+
+    const [cc, setCC] = useState("");
+    const [name, setName] = useState("");
+    const [semester, setSemester] = useState(0);
+    const [career, setCareer] = useState("");
+    const [password, setPassword] = useState("");
+    const [status, setStatus] = useState("");
+
+    async function registrarEstudiante(e) {
+        setName("");
+        setSemester(0);
+        setCareer("");
+        setPassword("");
+        setCC("");
+        try {
+            const data = await fetch('https://javeplatformapi.2.us-1.fl0.io/api/auth/register',{
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    cc,
+                    name,
+                    semester,
+                    career,
+                    password
+                })
+            });
+            const json = await data.json();
+            if (json.err) setStatus('error');
+            else setStatus('success');
+        } catch (e) {
+            setStatus('error');
+        }
+    }
+
     return (
         <AnimatePresence>
             <motion.div
@@ -26,6 +63,8 @@ export default function SignUp() {
                                             name="CC"
                                             type="text"
                                             required
+                                            value={cc}
+                                            onChange={e => setCC(e.target.value)}
                                             className="block w-full pl-5 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         />
                                     </div>
@@ -39,6 +78,8 @@ export default function SignUp() {
                                             name="Nombre"
                                             type="text"
                                             required
+                                            value={name}
+                                            onChange={e => setName(e.target.value)}
                                             className="block w-full pl-5 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         />
                                     </div>
@@ -50,8 +91,11 @@ export default function SignUp() {
                                         <input
                                             id="Semestre"
                                             name="Semestre"
-                                            type="text"
+                                            type="number"
+                                            min={0}
                                             required
+                                            value={semester}
+                                            onChange={e => setSemester(Number(e.target.value))}
                                             className="block w-full pl-5 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         />
                                     </div>
@@ -65,6 +109,8 @@ export default function SignUp() {
                                             name="Carrera"
                                             type="text"
                                             required
+                                            value={career}
+                                            onChange={e => setCareer(e.target.value)}
                                             className="block w-full pl-5 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         />
                                     </div>
@@ -76,8 +122,10 @@ export default function SignUp() {
                                         <input
                                             id="C"
                                             name="C"
-                                            type="text"
+                                            type="password"
                                             required
+                                            value={password}
+                                            onChange={e => setPassword(e.target.value)}
                                             className="block w-full pl-5 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         />
                                     </div>
@@ -86,6 +134,7 @@ export default function SignUp() {
                                 <div className={"pt-5"}>
                                     <button
                                         className="flex w-full justify-center rounded-md bg-secondary px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                        onClick={registrarEstudiante}
                                     >
                                         Crear
                                     </button>
@@ -93,7 +142,11 @@ export default function SignUp() {
                             </div>
                         </div>
                     </div>
-
+                    <h1 className="m-auto p-8 transition">
+                        { status === 'success' ? "Usuario creado correctamente" : (
+                            status === 'error' ? "¿Ya existe un usuario con esa cedula?" : ""
+                        ) }
+                    </h1>
                 </div>
             </motion.div>
         </AnimatePresence>

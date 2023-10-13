@@ -54,7 +54,7 @@ export default function PublicarMaterial() {
         form.append('desc', description);
         form.append('materia_materia_id', materia);
         form.append('estudiante_cc', '1034281129');
-        fetch('http://localhost:3000/api/material', {
+        fetch('https://javeplatformapi.2.us-1.fl0.io/api/material', {
             method: "POST",
             body: form
         }).then(res => res.json()).then(data => {
@@ -69,7 +69,7 @@ export default function PublicarMaterial() {
     // Pedirla de la base de datos
     useEffect(() => {
         const temp = [];
-        fetch('http://localhost:3000/api/materias/')
+        fetch('https://javeplatformapi.2.us-1.fl0.io/api/materias/')
             .then(results => results.json())
             .then(json => {
                 json.data.forEach(materia => {

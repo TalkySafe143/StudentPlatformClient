@@ -11,7 +11,7 @@ export default function Materiales() {
 
     const onDelete = e => {
 
-        fetch('http://localhost:3000/api/material/'+e, { method: 'DELETE' })
+        fetch('https://javeplatformapi.2.us-1.fl0.io/api/material/'+e, { method: 'DELETE' })
             .then(res => res.json())
             .then(data => setConfirm("eliminado"))
             .catch(err => setConfirm("error"))
@@ -19,7 +19,7 @@ export default function Materiales() {
     }
 
     useEffect(() => {
-        fetch('http://localhost:3000/api/material')
+        fetch('https://javeplatformapi.2.us-1.fl0.io/api/material')
             .then(json => json.json())
             .then(data => {
                 const elements = [];
