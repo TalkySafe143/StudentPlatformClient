@@ -19,7 +19,7 @@ export default function Materiales() {
 
     const onDelete = e => {
 
-        fetch('https://javeplatformapi.2.us-1.fl0.io/api/material/'+e, {
+        fetch(`${import.meta.env.VITE_API_URL}/api/material/`+e, {
             method: 'DELETE',
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('jwt')
@@ -32,7 +32,7 @@ export default function Materiales() {
     }
 
     useEffect(() => {
-        fetch('https://javeplatformapi.2.us-1.fl0.io/api/material', {
+        fetch(`${import.meta.env.VITE_API_URL}/api/material`, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('jwt')
             }

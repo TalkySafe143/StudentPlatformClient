@@ -14,9 +14,9 @@ export default function Login() {
     const [password, setPassword] = useState("");
 
     async function loginAPI(e) {
-
+        console.log(import.meta.env)
         try {
-            const data = await fetch('https://javeplatformapi.2.us-1.fl0.io/api/auth/login',{
+            const data = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`,{
                 method: 'POST',
                 headers: new Headers({
                     "Authorization" : `Basic ${btoa(`${cc}:${password}`)}`

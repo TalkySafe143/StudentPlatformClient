@@ -23,7 +23,7 @@ export default function Navegacion() {
             </NavbarItem>
         </>)
     } else {
-            fetch('https://javeplatformapi.2.us-1.fl0.io/api/users/' + user, {
+            fetch(`${import.meta.env.VITE_API_URL}/api/users/` + user, {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('jwt')

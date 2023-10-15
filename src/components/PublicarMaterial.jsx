@@ -56,7 +56,7 @@ export default function PublicarMaterial() {
         form.append('desc', description);
         form.append('materia_materia_id', materia);
         form.append('estudiante_cc', user);
-        fetch('https://javeplatformapi.2.us-1.fl0.io/api/material', {
+        fetch(`${import.meta.env.VITE_API_URL}/api/material`, {
             method: "POST",
             body: form,
             headers: {
@@ -74,7 +74,7 @@ export default function PublicarMaterial() {
     // Pedirla de la base de datos
     useEffect(() => {
         const temp = [];
-        fetch('https://javeplatformapi.2.us-1.fl0.io/api/materias/',{
+        fetch(`${import.meta.env.VITE_API_URL}/api/materias/`,{
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('jwt')
             }
