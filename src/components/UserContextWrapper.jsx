@@ -1,9 +1,13 @@
 import React, {useState} from 'react';
 
-export const AppContext = React.createContext({});
+const user = localStorage.getItem('user');
+const setUser = (value) => {
+    localStorage.setItem('user', value);
+}
+
+export const AppContext = React.createContext({ user, setUser });
 
 export const UserContextWrapper = (props) => {
-    const [ user, setUser ] = useState("");
 
     return (
         <AppContext.Provider value={{ user, setUser }}>

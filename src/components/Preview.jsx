@@ -35,26 +35,32 @@ export default function Preview(props) {
 
     return (
         <>
-            <Button color="primary" onPress={onOpen}>Preview</Button>
+            <Button color="primary" onPress={onOpen} id={"previewMaterial"}>Preview</Button>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} backdrop="blur" scrollBehavior="inside" size="5xl">
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex gap-1 text-2xl">
+                            <ModalHeader className="flex gap-1 text-2xl" id={"materialModal"}>
                                 {props.prev ? props.title : title}
-                                <Chip color="success">{materia}</Chip>
+                                <Chip color="success" id={"chipMateria"}>{materia}</Chip>
                             </ModalHeader>
-                            <ModalBody className="leading-8">
+                            <ModalBody className="leading-8" id={"cuerpoModal"}>
                                 <ReactMarkdown
                                     children={props.prev ? props.content : content}
                                     remarkPlugins={[remarkMath]}
                                     rehypePlugins={[rehypeKatex]}
                                 />
                                 {!props.prev ? (
-                                    <div className="w-full h-unit-7xl">
+                                    <div className="w-full h-unit-7xl" id={"filePreview"}>
                                         <FileViewer
-                                            filePath={props.file}
-                                            fileType={type}
+                                            filePath={
+                                                (props.file === `${url}${props.content}/${props.content}-desc.txt`) ? (
+                                                'https://materiales-javeplatform.s3.amazonaws.com/noFile.png'
+                                                ) : (props.file)
+                                            }
+                                            fileType={(props.file === `${url}${props.content}/${props.content}-desc.txt`) ? (
+                                                'png'
+                                            ) : (type)}
                                         />
                                     </div>
                                 ) : <h1 style={{ color: "red" }}>Lo sentimos, tu archivo no esta disponible en la preview</h1>}
