@@ -2,6 +2,7 @@ import {motion, AnimatePresence} from "framer-motion";
 import {useEffect, useState} from "react";
 import { useAlert } from 'react-alert'
 import Navegacion from "./Navegacion.jsx";
+import {Chip} from "@nextui-org/react";
 
 export default function SignUp() {
 
@@ -12,6 +13,8 @@ export default function SignUp() {
     const [career, setCareer] = useState("");
     const [password, setPassword] = useState("");
     const [status, setStatus] = useState("");
+    const [invalid, setInvalid] = useState(false);
+    const [enabled, setEnabled] = useState(false);
 
     async function registrarEstudiante(e) {
         try {
@@ -28,6 +31,16 @@ export default function SignUp() {
                     password
                 })
             });
+
+            setEnabled(true);
+
+            if(cc === "" || name === "" || semester === "" || career === "" || password === ""){
+                setInvalid(true);
+                setEnabled(false);
+                return;
+            }
+
+            setInvalid(false);
 
             const json = await data.json();
             if (json.err) alert.error('Ya se creó ese usuario')
@@ -62,6 +75,7 @@ export default function SignUp() {
                     <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                         <div className="space-y-6">
                             <div>
+                                {invalid ? <Chip color="danger">Rellene los campos obligatorios</Chip>: ""}
                                 <label htmlFor="CC" className="block text-sm font-medium leading-6 text-gray-900">
                                         Cedula de ciudadania
                                     <div className="mt-2">
