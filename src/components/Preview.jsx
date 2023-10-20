@@ -35,7 +35,7 @@ export default function Preview(props) {
 
     return (
         <>
-            <Button color="primary" onPress={onOpen}>Preview</Button>
+            <Button color="primary" onPress={onOpen} id={"previewMaterial"}>Preview</Button>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} backdrop="blur" scrollBehavior="inside" size="5xl">
                 <ModalContent>
                     {(onClose) => (
