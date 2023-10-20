@@ -8,7 +8,6 @@ import {AppContext} from "./UserContextWrapper.jsx";
 export default function Login() {
 
     const navigate = useNavigate()
-    const {user, setUser} = useContext(AppContext);
     const alert = useAlert();
     const [cc, setCC] = useState("");
     const [password, setPassword] = useState("");
@@ -29,7 +28,7 @@ export default function Login() {
             else {
 
                 localStorage.setItem('jwt', response.token);
-                setUser(cc);
+                localStorage.setItem('user', cc);
                 navigate('/');
             }
         } catch (e) {

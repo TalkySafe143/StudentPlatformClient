@@ -18,8 +18,6 @@ import {DeleteDocumentIcon} from "../assets/DeleteDocumentIcon.jsx";
 import Preview from "./Preview.jsx";
 import {AppContext} from "./UserContextWrapper.jsx";
 export default function PublicarMaterial() {
-
-    const { user, setUser } = useContext(AppContext)
     const inputFile = useRef(null);
     const [file, setFile] = useState("");
     const [title, setTitle] = useState("");
@@ -49,6 +47,7 @@ export default function PublicarMaterial() {
         }
 
         setInvalid(false)
+        const user = localStorage.getItem('user');
 
         const form = new FormData();
         form.append('uploadedFiles', inputFile.current.files[0]);
