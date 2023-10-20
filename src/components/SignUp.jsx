@@ -35,6 +35,8 @@ export default function SignUp() {
         } catch (e) {
             setStatus('error');
             alert.error('Ya se creó ese usuario')
+            console.log(e);
+
         } finally {
             setName("");
             setSemester(0);
