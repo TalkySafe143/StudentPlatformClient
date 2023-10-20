@@ -15,7 +15,7 @@ export default function SignUp() {
 
     async function registrarEstudiante(e) {
         try {
-            const data = await fetch('${import.meta.env.VITE_API_URL}/api/auth/register',{
+            const data = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/register`,{
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json'
