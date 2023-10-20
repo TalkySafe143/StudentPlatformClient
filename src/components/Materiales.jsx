@@ -46,7 +46,7 @@ export default function Materiales() {
                             <CardBody className="flex-row justify-center items-center gap-x-5">
                                 <h1 className="m-auto text-2xl font-serif">{material.title}</h1>
                                 <Preview content={material.material_id} title={
-                                    <div className="flex gap-2">
+                                    <div className="flex gap-2" id={"tituloPreview"}>
                                         {material.title}
                                     </div>
                                 } file={material.link} materia={material.materia_materia_id} prev={false}
