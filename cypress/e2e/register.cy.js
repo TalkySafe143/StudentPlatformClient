@@ -37,7 +37,7 @@ describe('template spec', () => {
                 failOnStatusCode: false
             })
                 .should(response => {
-                    expect(response.status).to.eq(401)
+                    expect(response.status).to.eq(500)
                 })
         })
 

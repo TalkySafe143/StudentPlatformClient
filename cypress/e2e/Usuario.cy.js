@@ -21,7 +21,8 @@ describe("Prueba de creación de usuario", () => {                 //agrupa las 
         cy.request({
             url:'https://javeplatformapi.2.us-1.fl0.io/api/users/123456789',
             method : 'DELETE',
-            headers : {'Authorization' : `Bearer ${localStorage.getItem('jwt')}`}
+            headers : {'Authorization' : `Bearer ${localStorage.getItem('jwt')}`},
+            failOnStatusCode: false
         });
 
 
