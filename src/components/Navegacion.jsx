@@ -1,15 +1,21 @@
 import {Button, Chip, Link, Navbar, NavbarBrand, NavbarContent, NavbarItem} from "@nextui-org/react";
 import {AcmeLogo} from "../assets/AcmeLogo.jsx";
-import { Link as RouterLink } from 'react-router-dom'
+import {Link as RouterLink, useNavigate} from 'react-router-dom'
 import {useContext, useEffect, useState} from "react";
 import { AppContext } from './UserContextWrapper.jsx'
 export default function Navegacion() {
 
-    const {user, setUser} = useContext(AppContext);
+    const navigate = useNavigate();
     const [logged, setLogged] = useState(<></>);
+    const user = localStorage.getItem('user');
+    const onSignOut = () => {
+        localStorage.removeItem('jwt');
+        localStorage.removeItem('user');
+        navigate('/login')
+    }
 
     useEffect(() => {
-    if (user === '') {
+    if (!user) {
         setLogged(<>
             <NavbarItem className="hidden lg:flex">
                 <RouterLink to={"/login"}>
@@ -33,6 +39,9 @@ export default function Navegacion() {
                     setLogged(
                         <>
                             <Chip color={"success"}>Bienvenido, {json.data[0].name}</Chip>
+                            <NavbarItem>
+                                <Chip color={"secondary"} variant={"flat"} onClick={onSignOut}>Sign out</Chip>
+                            </NavbarItem>
                         </>
                     )
                 })

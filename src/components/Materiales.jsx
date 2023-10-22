@@ -46,10 +46,11 @@ export default function Materiales() {
                             <CardBody className="flex-row justify-center items-center gap-x-5">
                                 <h1 className="m-auto text-2xl font-serif">{material.title}</h1>
                                 <Preview content={material.material_id} title={
-                                    <div className="flex gap-2">
+                                    <div className="flex gap-2" id={"tituloPreview"}>
                                         {material.title}
                                     </div>
-                                } file={material.link} materia={material.materia_materia_id} prev={false}/>
+                                } file={material.link} materia={material.materia_materia_id} prev={false}
+                                />
                                 <Popover>
                                     <PopoverTrigger>
                                         <Button color="danger">Eliminar</Button>
@@ -67,6 +68,12 @@ export default function Materiales() {
                         </Card>
                     )
                 })
+
+                if (elements.length === 0) {
+                    elements.push(<div className={"flex items-center justify-center"}>
+                        <Chip color={"primary"} id={"publicaAlgo"}>Comienza a publicar tus materiales</Chip>
+                    </div>)
+                }
                 setMateriales(elements)
             })
     }, []);
