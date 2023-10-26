@@ -19,11 +19,11 @@ export default function Materias() {
     const [droppedElements, setDroppedElements] = useState([]);
     const [parent, setParent] = useState(null);
     const draggables = [
-        <Draggable key="draggable1" id="draggable1">Draggable 1</Draggable>,
-        <Draggable key="draggable2" id="draggable2">Draggable 2</Draggable>,
-        <Draggable key="draggable3" id="draggable3">Draggable 3</Draggable>,
-        <Draggable key="draggable4" id="draggable4">Draggable 4</Draggable>,
-        <Draggable key="draggable5" id="draggable5">Draggable 5</Draggable>
+        <Draggable key="draggable1" id="draggable1">Materia 1</Draggable>,
+        <Draggable key="draggable2" id="draggable2">Materia 2</Draggable>,
+        <Draggable key="draggable3" id="draggable3">Materia 3</Draggable>,
+        <Draggable key="draggable4" id="draggable4">Materia 4</Draggable>,
+        <Draggable key="draggable5" id="draggable5">Materia 5</Draggable>
     ];
 
     return (
@@ -41,6 +41,9 @@ export default function Materias() {
                 <div className="flex flex-col gap-3 m-auto">
                     <Droppable id="droppable" validIds={['draggable1', 'draggable2', 'draggable3', 'draggable4', 'draggable5']} >
                         {parent ? `Dropped on ${parent}` : 'Drop here'}
+                        {droppedElements.map((element, index) => {
+                            <div key = {index}>{element.draggableId}</div>
+                        })} 
                     </Droppable>
                 </div>
 
@@ -57,8 +60,7 @@ export default function Materias() {
         if (over) {
             const elementDropped = {
                 containerId: over.id,
-                draggableId: active.id,
-                // Otros datos que quieras almacenar
+                draggableId: active.id
             };
 
             setDroppedElements([...droppedElements, elementDropped]);
