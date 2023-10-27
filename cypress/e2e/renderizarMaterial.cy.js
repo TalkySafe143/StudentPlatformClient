@@ -10,6 +10,7 @@ describe('Renderizar el material', () => {
         })
             .then(json => {
                 cy.viewport(1920, 1080)
+                localStorage.setItem("test", "Y");
                 localStorage.setItem("jwt", json.body.token);
                 localStorage.setItem("user", "123");
                 cy.visit("http://localhost:5173/materiales")
@@ -19,12 +20,13 @@ describe('Renderizar el material', () => {
     after(() => {
         localStorage.removeItem("jwt");
         localStorage.removeItem("user");
+        localStorage.removeItem("test");
     })
 
     it('Si no tiene materiales, mostrar un mensaje', () => {
         cy.request({
             method: 'GET',
-            url: 'https://javeplatformapi.2.us-1.fl0.io/api/material',
+            url: 'https://javeplatformapi.2.us-1.fl0.io/api/material?estudiante_cc=123',
             failOnStatusCode: false,
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem('jwt')}`
@@ -51,7 +53,7 @@ describe('Renderizar el material', () => {
     it('Los materiales deben contener un boton de preview', () => {
         cy.request({
             method: 'GET',
-            url: 'https://javeplatformapi.2.us-1.fl0.io/api/material',
+            url: 'https://javeplatformapi.2.us-1.fl0.io/api/material?estudiante_cc=123',
             failOnStatusCode: false,
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem('jwt')}`
@@ -121,7 +123,7 @@ describe('Renderizar el material', () => {
 
         cy.request({
             method: 'GET',
-            url: 'https://javeplatformapi.2.us-1.fl0.io/api/material',
+            url: 'https://javeplatformapi.2.us-1.fl0.io/api/material?estudiante_cc=123',
             failOnStatusCode: false,
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem('jwt')}`

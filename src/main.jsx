@@ -19,6 +19,11 @@ const alertOptions = {
     transition: transitions.SCALE
 }
 
+if (!localStorage.getItem("test")) {
+    localStorage.removeItem("user");
+    localStorage.removeItem("jwt");
+}
+
 const router = createBrowserRouter([
     {
         path: '/',
