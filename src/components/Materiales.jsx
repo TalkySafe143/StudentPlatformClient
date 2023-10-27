@@ -32,7 +32,7 @@ export default function Materiales() {
     }
 
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_API_URL}/api/material`, {
+        fetch(`${import.meta.env.VITE_API_URL}/api/material?estudiante_cc=${localStorage.getItem("user")}`, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('jwt')
             }
@@ -53,14 +53,14 @@ export default function Materiales() {
                                 />
                                 <Popover>
                                     <PopoverTrigger>
-                                        <Button color="danger">Eliminar</Button>
+                                        <Button id={"selectEliminar"} color="danger">Eliminar</Button>
                                     </PopoverTrigger>
                                     <PopoverContent>
                                         <div className="flex-col items-center justify-center">
                                             <h1 className="m-3">¿Estas seguro?
                                                 {confirm === "" ? "" : <Chip color="primary">{confirm}</Chip>}
                                             </h1>
-                                            <Button onClick={() => onDelete(material.material_id)} color="danger" className="m-3 ml-4 p-1" key={material.material_id}>Si</Button>
+                                            <Button id={"eliminarMaterial"} onClick={() => onDelete(material.material_id)} color="danger" className="m-3 ml-4 p-1" key={material.material_id}>Si</Button>
                                         </div>
                                     </PopoverContent>
                                 </Popover>
