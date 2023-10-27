@@ -19,10 +19,20 @@ const alertOptions = {
     transition: transitions.SCALE
 }
 
-if (!localStorage.getItem("test")) {
-    localStorage.removeItem("user");
-    localStorage.removeItem("jwt");
-}
+fetch(`${import.meta.env.VITE_API_URL}/api/material/`, {
+    method: 'GET',
+    headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+    }
+}).then(res => {
+    if (res.status === 401) throw 'noJWT'
+})
+    .catch(err => {
+        if(err === 'noJWT') {
+            localStorage.removeItem("user");
+            localStorage.removeItem("jwt");
+        }
+    });
 
 const router = createBrowserRouter([
     {
