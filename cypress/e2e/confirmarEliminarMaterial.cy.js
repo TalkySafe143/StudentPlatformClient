@@ -1,5 +1,6 @@
 describe('Confirmar la eliminacion del material', () => {
     beforeEach(() => {
+        cy.viewport(1920, 1080)
         cy.request({
             method: 'POST',
             url: 'https://javeplatformapi.2.us-1.fl0.io/api/auth/login',
@@ -9,7 +10,6 @@ describe('Confirmar la eliminacion del material', () => {
             failOnStatusCode: false
         })
             .then(json => {
-                cy.viewport(1920, 1080)
                 localStorage.setItem("test", "Y");
                 localStorage.setItem("jwt", json.body.token);
                 localStorage.setItem("user", "123");
