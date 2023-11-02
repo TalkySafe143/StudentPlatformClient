@@ -35,12 +35,23 @@ describe('No existen materias vinculadas', () => {
             failOnStatusCode: false
         }).then(res => {
             // Eliminar materias asociadas
+            const response = res.body.data;
+            response.forEach(materia => {
+                cy.request({
+                    method: 'DELETE',
+                    url: 'https://javeplatformapi.2.us-1.fl0.io/api/materias/'+materia.materia_id,
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("jwt")}`
+                    },
+                    failOnStatusCode: false
+                })
+            })
             // Validar que no existan materias asociadas al estudiante
- 
+            
+            cy.get("#materiasAsociadas").should('be.empty');
 
         })
 
-           // Retornar materias asociadas
 
     });
 
