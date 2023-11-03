@@ -42,7 +42,7 @@ export default function Materiales() {
                 const elements = [];
                 data.data.forEach(material => {
                     elements.push(
-                        <Card className="ml-unit-9xl mr-unit-9xl mt-10" key={material.material_id}>
+                        <Card className="m-auto w-3/6" key={material.material_id}>
                             <CardBody className="flex-row justify-center items-center gap-x-5">
                                 <h1 className="m-auto text-2xl font-serif">{material.title}</h1>
                                 <Preview content={material.material_id} title={

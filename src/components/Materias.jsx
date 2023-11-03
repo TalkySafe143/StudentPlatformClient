@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+
 import {
     DndContext,
     DragOverlay,
@@ -24,7 +25,7 @@ export default function Materias() {
     const [items, setItems] = useState({
         "system": [],
         "student": []
-    })
+    });
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -90,7 +91,7 @@ export default function Materias() {
         else return "student"
     }
 
-    function handleDragEnd({ over, active }) {
+    async function handleDragEnd({ over, active }) {
         if (over) {
             const fromId = findContainer(active.id)
             const toId = findContainer(over.id)
@@ -99,20 +100,61 @@ export default function Materias() {
             const nuevoSystem = Array.from(items["system"])
 
             // Aqui se van a asociar las materias o a desasociarlas
-            let selected;
-            for (let i = 0; i < (fromId === 'system' ? nuevoSystem.length : nuevoStudent.length); i++) {
-                if ((fromId === 'system' ? nuevoSystem[i] : nuevoStudent[i]).id === active.id) {
-                    selected = (fromId === 'system' ? nuevoSystem[i] : nuevoStudent[i]);
-                    (fromId === 'system' ? nuevoSystem : nuevoStudent).splice(i, 1);
-                    break;
-                }
-            }
-            (fromId === 'student' ? nuevoSystem : nuevoStudent).push(selected);
+            let materiaName;
 
-            setItems({
-                system: nuevoSystem,
-                student: nuevoStudent
-            })
+            if (fromId === 'student') {
+                materiaName = nuevoStudent.find(el => el.id === active.id).name;
+            }else {
+                materiaName = nuevoSystem.find(el => el.id === active.id).name;
+            }
+
+            const message = (fromId === 'student' ?
+                `¿Seguro que quieres desvincular la materia de ${materiaName}?` :
+                `¿Seguro que quieres agregar la materia de ${materiaName}?`
+            );
+            if (!window.confirm(message)) return;
+            let selected;
+
+            try {
+                if (fromId === 'student') { // La va a desvincular
+                    await fetch(`${import.meta.env.VITE_API_URL}/api/materiaXestudiante/${active.id}/${localStorage.getItem('user')}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization' : `Bearer ${localStorage.getItem("jwt")}`
+                        }
+                    });
+                } else {
+                    await fetch(`${import.meta.env.VITE_API_URL}/api/materiaXestudiante`,{
+                        method: 'POST',
+                        headers: {
+                            'Content-type': 'application/json',
+                            'Authorization' : `Bearer ${localStorage.getItem("jwt")}`
+                        },
+                        body: JSON.stringify({
+                            materia_materia_id: active.id, 
+                            estudiante_cc: localStorage.getItem('user')
+                        })
+                    });
+                }
+    
+                for (let i = 0; i < (fromId === 'system' ? nuevoSystem.length : nuevoStudent.length); i++) {
+                    if ((fromId === 'system' ? nuevoSystem[i] : nuevoStudent[i]).id === active.id) {
+                        selected = (fromId === 'system' ? nuevoSystem[i] : nuevoStudent[i]);
+                        (fromId === 'system' ? nuevoSystem : nuevoStudent).splice(i, 1);
+                        break;
+                    }
+                }
+                (fromId === 'student' ? nuevoSystem : nuevoStudent).push(selected);
+    
+                setItems({
+                    system: nuevoSystem,
+                    student: nuevoStudent
+                })
+            } catch (e) {
+                console.log("Algo salió mal con la vinculacion");
+            }
+
+            
         }
     }
 
@@ -137,10 +179,12 @@ export default function Materias() {
         >
             <div  id="materiasAsociadas" className="mb-2 mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 flex flex-row">
                 <div id="estudiante" className="flex flex-col gap-3 m-auto">
+                    <h4>Tus materias</h4>
                     <Droppable id={"student"} items={items["student"]} />
                 </div>
 
                 <div id="sistema" className="flex flex-col gap-3 m-auto">
+                    <h4>Materias disponibles</h4>
                     <Droppable id={"system"} items={items["system"]} />
                 </div>
             </div>

@@ -5,6 +5,8 @@ import remarkMath from "remark-math";
 import "katex/dist/katex.min.css"
 import rehypeKatex from "rehype-katex";
 import FileViewer from 'react-file-viewer-extended'
+import { AcmeLogo } from "../assets/AcmeLogo";
+import {AiOutlineUser} from 'react-icons/ai'
 
 export default function Preview(props) {
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
@@ -12,9 +14,42 @@ export default function Preview(props) {
     const [materia, setMateria] = useState(props.materia)
     const [content, setContent] = useState(props.content)
     const [type, setType] = useState("pdf");
+    const [author, setAuthor] = useState(<></>);
     const url = "https://materiales-javeplatform.s3.amazonaws.com/"
 
     useEffect(() => {
+
+        if (props.author) {
+            fetch(`${import.meta.env.VITE_API_URL}/api/material/`, {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+                }
+            }).then(res => res.json())
+                .then(json => {
+                    const authorId = json.data.find(material => material.material_id === props.content).estudiante_cc;
+
+                    fetch(`${import.meta.env.VITE_API_URL}/api/users/${authorId}`, {
+                        headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+                        }
+                    }).then(response => response.json())
+                        .then(user => {
+                            setAuthor(
+                                <>
+                                    <Chip color="warning"> 
+                                        <div className="flex flex-row gap-5">
+                                            <div className="p-2">
+                                                <AiOutlineUser />
+                                            </div>
+                                             <h1 className="font-bold text-sm m-auto">Autor: {user.data[0].name} - {user.data[0].career}</h1>
+                                        </div>
+                                    </Chip>
+                                </>
+                            )
+                        })
+                })
+        }
+
         if (!props.prev) {
             fetch(`${url}${props.content}/${props.content}-desc.txt`)
                 .then(file => file.text())
@@ -40,9 +75,11 @@ export default function Preview(props) {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex gap-1 text-2xl" id={"materialModal"}>
-                                {props.prev ? props.title : title}
+                            <ModalHeader className="flex flex-row gap-6" id={"materialModal"}>
+                                <AcmeLogo />
+                                <h4 className="font-bold text-large">{props.prev ? props.title : title}</h4>
                                 <Chip color="success" id={"chipMateria"}>{materia}</Chip>
+                                {author}
                             </ModalHeader>
                             <ModalBody className="leading-8" id={"cuerpoModal"}>
                                 <ReactMarkdown

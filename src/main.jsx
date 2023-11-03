@@ -11,6 +11,7 @@ import SignUp from "./components/SignUp.jsx";
 import Materias from "./components/Materias.jsx";
 import Materiales from "./components/Materiales.jsx";
 import { UserContextWrapper } from './components/UserContextWrapper.jsx'
+import MainMaterias from './components/MainMaterias.jsx'
 
 const alertOptions = {
     position: positions.BOTTOM_CENTER,
@@ -49,11 +50,15 @@ const router = createBrowserRouter([
     },
     {
         path: '/materias',
-        element: <Materias />
+        element: <MainMaterias />
     },
     {
         path: '/materiales',
         element: <Materiales />
+    },
+    {
+        path: '/materias/gestionar',
+        element: <Materias />
     }
 ])
 

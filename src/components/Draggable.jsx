@@ -14,15 +14,13 @@ export function Draggable(props){
     const style = {
         transform: CSS.Translate.toString(transform),
         transition,
+        margin: "20px",
         width: "250px",
-        height: "100%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        border: "1px solid black",
-        margin: "10px 0",
+        height: "100px",
         background: "white",
-        color: "black"
+        borderRadius: "10px",
+        color: "black",
+        boxShadow: "inset 0 -3em 3em rgba(0,0,0,0.1), 0 0  0 2px rgb(190, 190, 190), 0.3em 0.3em 1em rgba(0,0,0,0.3)"
     };
 
     return (

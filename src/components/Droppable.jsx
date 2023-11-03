@@ -13,14 +13,15 @@ export function Droppable(props) {
     });
     const style = {
         opacity: isOver ? 1 : 0.5,
-        border: "1px solid black",
+        border: "1px solid gray",
         width: "500px",
         minHeight: "700px",
         height: "100%",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        borderRadius: "5%"
     };
 
     return (
