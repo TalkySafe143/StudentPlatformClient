@@ -1,6 +1,7 @@
 describe('No existen materias vinculadas', () => {
 
     beforeEach(() => {
+        cy.viewport(1920, 1080)
         cy.request({
             method: 'POST',
             url: 'https://javeplatformapi.2.us-1.fl0.io/api/auth/login',
@@ -8,14 +9,12 @@ describe('No existen materias vinculadas', () => {
                 "Authorization": `Basic ${btoa("123:root")}`
             },
             failOnStatusCode: false
-        })
-            .then(json => {
-                cy.viewport(1920, 1080)
+        }).then(json => {
                 localStorage.setItem("test", "Y");
                 localStorage.setItem("jwt", json.body.token);
                 localStorage.setItem("user", "123");
                 cy.visit("http://localhost:5173/materias")
-            })
+            });
     });
 
     after(() => {
@@ -25,21 +24,22 @@ describe('No existen materias vinculadas', () => {
     })
 
     it('No tiene materias vinculadas a su usuario ', () => {
-
+        let response;
         cy.request({
             method: 'GET',
-            url: 'https://javeplatformapi.2.us-1.fl0.io/api/materias',
+            url: 'https://javeplatformapi.2.us-1.fl0.io/api/materiaxestudiante',
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem("jwt")}`
             },
             failOnStatusCode: false
         }).then(res => {
             // Eliminar materias asociadas
-            const response = res.body.data;
+            response = res.body.data;
+            console.log(response)
             response.forEach(materia => {
                 cy.request({
-                    method: 'DELETE',
-                    url: 'https://javeplatformapi.2.us-1.fl0.io/api/materias/'+materia.materia_id,
+                    method: 'GET',
+                    url: 'https://javeplatformapi.2.us-1.fl0.io/api/materiaxestudiante/'+materia.materia_id,
                     headers: {
                         "Authorization": `Bearer ${localStorage.getItem("jwt")}`
                     },
@@ -48,7 +48,19 @@ describe('No existen materias vinculadas', () => {
             })
             // Validar que no existan materias asociadas al estudiante
             
-            cy.get("#materiasAsociadas").should('be.empty');
+            cy.get("#noMateriasVinculadas").should('exist');
+
+            response.forEach(materia => {
+                cy.request({
+                    method: 'POST',
+                    url: 'https://javeplatformapi.2.us-1.fl0.io/api/materias/',
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("jwt")}`
+                    },
+                    body: JSON.stringify(materia),
+                    failOnStatusCode: false
+                })
+            })
 
         })
 

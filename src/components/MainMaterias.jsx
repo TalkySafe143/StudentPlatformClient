@@ -20,6 +20,11 @@ export default function MainMaterias() {
     const [cartasMaterias, setCartas] = useState([]);
 
     useEffect(() => {
+
+        if (!localStorage.getItem('jwt')) {
+            navigate("/login")
+        }
+
         fetch(`${import.meta.env.VITE_API_URL}/api/materiaXestudiante/`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('jwt')}`
