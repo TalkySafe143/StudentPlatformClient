@@ -109,7 +109,7 @@ export default function PublicarMaterial() {
                     <>
                         <ModalHeader className="flex flex-col gap-1 text-2xl">¡Publica un material!</ModalHeader>
                         <ModalBody>
-                            {invalid ? <Chip color="danger">Rellene los campos obligatorios</Chip>: ""}
+                            {invalid ? <Chip color="danger" id={"relleneMaterial"}>Rellene los campos obligatorios</Chip>: ""}
                             <Input type="text"
                                    label={"Titulo del material"}
                                    labelPlacement="outside"
@@ -197,7 +197,7 @@ export default function PublicarMaterial() {
                             }}>
                                 Cerrar
                             </Button>
-                            <Button color="success" onPress={onPost} isDisabled={enabled}>
+                            <Button color="success" id={"publicarMaterial"} onPress={onPost} isDisabled={enabled}>
                                 Publicar
                             </Button>
                         </ModalFooter>

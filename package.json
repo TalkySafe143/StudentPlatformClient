@@ -10,13 +10,16 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "cypress:open": "cypress open",
-    "test": "cypress run"
+    "test": "cypress run --browser chrome"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.0.8",
+    "@dnd-kit/sortable": "^7.0.2",
+    "@dnd-kit/utilities": "^3.2.1",
     "@nextui-org/react": "^2.1.12",
     "cypress": "^13.2.0",
     "framer-motion": "^10.16.4",
+    "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-alert": "^7.0.3",
     "react-alert-template-basic": "^1.0.2",

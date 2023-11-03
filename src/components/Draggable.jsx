@@ -1,14 +1,28 @@
 import React from 'react';
-import {useDraggable} from '@dnd-kit/core';
+import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import PropTypes from 'prop-types'; // Importa PropTypes
 
 export function Draggable(props){
-    const {attributes, listeners, setNodeRef, transform} = useDraggable({
-        id: props.id,
-    });
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition
+    } = useSortable({ id: props.id });
     const style = {
         transform: CSS.Translate.toString(transform),
+        transition,
+        width: "250px",
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        border: "1px solid black",
+        margin: "10px 0",
+        background: "white",
+        color: "black"
     };
 
     return (
@@ -21,12 +35,5 @@ export function Draggable(props){
         </button>
     );
 }
-
-
-// Define prop validations
-Draggable.propTypes = {
-    id: PropTypes.string.isRequired,
-    children: PropTypes.node,
-};
 
 
