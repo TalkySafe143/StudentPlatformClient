@@ -11,6 +11,7 @@ import SignUp from "./components/SignUp.jsx";
 import Materias from "./components/Materias.jsx";
 import Materiales from "./components/Materiales.jsx";
 import { UserContextWrapper } from './components/UserContextWrapper.jsx'
+import MainMaterias from './components/MainMaterias.jsx'
 
 const alertOptions = {
     position: positions.BOTTOM_CENTER,
@@ -18,6 +19,21 @@ const alertOptions = {
     offset: '30px',
     transition: transitions.SCALE
 }
+
+fetch(`${import.meta.env.VITE_API_URL}/api/material/`, {
+    method: 'GET',
+    headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+    }
+}).then(res => {
+    if (res.status === 401) throw 'noJWT'
+})
+    .catch(err => {
+        if(err === 'noJWT') {
+            localStorage.removeItem("user");
+            localStorage.removeItem("jwt");
+        }
+    });
 
 const router = createBrowserRouter([
     {
@@ -34,11 +50,15 @@ const router = createBrowserRouter([
     },
     {
         path: '/materias',
-        element: <Materias />
+        element: <MainMaterias />
     },
     {
         path: '/materiales',
         element: <Materiales />
+    },
+    {
+        path: '/materias/gestionar',
+        element: <Materias />
     }
 ])
 

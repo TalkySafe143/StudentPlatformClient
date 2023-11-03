@@ -72,19 +72,30 @@ export default function PublicarMaterial() {
 
     // Pedirla de la base de datos
     useEffect(() => {
-        const temp = [];
-        fetch(`${import.meta.env.VITE_API_URL}/api/materias/`,{
+
+        fetch(`${import.meta.env.VITE_API_URL}/api/materiaXestudiante/`, {
             headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+                'Authorization': `Bearer ${localStorage.getItem('jwt')}`
             }
-        })
+        }).then(res => res.json())
+        .then(json => {
+            const materiasIds = [];
+            json.data.forEach(assoc => {
+                if (assoc.estudiante_cc === localStorage.getItem('user')) materiasIds.push(assoc.materia_materia_id);
+            })
+
+            let temp = [];
+            fetch(`${import.meta.env.VITE_API_URL}/api/materias/`,{
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+                }
+            })
             .then(results => results.json())
-            .then(json => {
-                json.data.forEach(materia => {
-                    temp.push(materia)
-                })
+            .then(json2 => {
+                temp = json2.data.filter(materia => materiasIds.find(uid => uid === materia.materia_id) != undefined);
+                setMaterias(temp);
             });
-        setMaterias(temp);
+        });
     }, []);
     const onChangeMateria = e => {
         setMateria(e.target.value)
@@ -109,7 +120,7 @@ export default function PublicarMaterial() {
                     <>
                         <ModalHeader className="flex flex-col gap-1 text-2xl">¡Publica un material!</ModalHeader>
                         <ModalBody>
-                            {invalid ? <Chip color="danger">Rellene los campos obligatorios</Chip>: ""}
+                            {invalid ? <Chip color="danger" id={"relleneMaterial"}>Rellene los campos obligatorios</Chip>: ""}
                             <Input type="text"
                                    label={"Titulo del material"}
                                    labelPlacement="outside"
@@ -197,7 +208,7 @@ export default function PublicarMaterial() {
                             }}>
                                 Cerrar
                             </Button>
-                            <Button color="success" onPress={onPost} isDisabled={enabled}>
+                            <Button color="success" id={"publicarMaterial"} onPress={onPost} isDisabled={enabled}>
                                 Publicar
                             </Button>
                         </ModalFooter>
