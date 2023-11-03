@@ -12,7 +12,6 @@ return (
             <div className="container ">
                 <div className="heading_container heading_center">
                 <div className='flex flex-row gap-5'>
-                    
                     <h1 className='font-bold text-6xl'>
                     JavePlatform
                 </h1>
