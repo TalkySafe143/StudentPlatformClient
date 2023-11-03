@@ -1,6 +1,6 @@
 import React from 'react';
 import "../css/style.css";
-
+import { AcmeLogo } from '../assets/AcmeLogo';
 import "../css/font-awesome.min.css";
 
 export default function HomePage () {
@@ -11,9 +11,12 @@ return (
             <div className="service_container">
             <div className="container ">
                 <div className="heading_container heading_center">
-                <h1 className='font-bold'>
+                <div className='flex flex-row gap-5'>
+                    
+                    <h1 className='font-bold text-6xl'>
                     JavePlatform
                 </h1>
+                </div>
                 <h2 className='pt-4'>
                     Todo tu material de estudio en el mismo<span> lugar</span>
                 </h2>
