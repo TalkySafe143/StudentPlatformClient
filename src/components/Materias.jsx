@@ -135,12 +135,12 @@ export default function Materias() {
             onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
         >
-            <div  className="mb-2 mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 flex flex-row">
-                <div className="flex flex-col gap-3 m-auto">
+            <div  id="materiasAsociadas" className="mb-2 mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 flex flex-row">
+                <div id="estudiante" className="flex flex-col gap-3 m-auto">
                     <Droppable id={"student"} items={items["student"]} />
                 </div>
 
-                <div className="flex flex-col gap-3 m-auto">
+                <div id="sistema" className="flex flex-col gap-3 m-auto">
                     <Droppable id={"system"} items={items["system"]} />
                 </div>
             </div>
